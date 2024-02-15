@@ -746,6 +746,10 @@ def mqtt_device(topics, payload):
     cmd = RS485_DEVICE[device][cmd]
     
     if device == "light":
+        if payload == "ON":
+            payload = 0xF1 if idn.startswith("1_1") else 0x01  # 거실등만 0xF1
+        elif payload == "OFF":
+            payload = 0x00
         length = 10
         packet = bytearray(length)
         packet[0] = 0xF7
