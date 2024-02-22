@@ -401,7 +401,7 @@ serial_ack = {}
 last_query = int(0).to_bytes(2, "big")
 last_topic_list = {}
 
-mqtt = paho_mqtt.Client()
+mqtt = paho_mqtt.Client(CallbackAPIVersion.VERSION1)
 mqtt_connected = False
 
 logger = logging.getLogger(__name__)
