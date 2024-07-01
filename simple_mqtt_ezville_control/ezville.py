@@ -493,7 +493,7 @@ def ezville_loop(config):
                                         onoff = 'ON' if int(packet[7 + 6 * id], 16) > 0 else 'OFF'
                                         autoonoff = 'ON' if int(packet[6 + 6 * id], 16) > 0 else 'OFF'
                                         current = DATA[4:]
-                                        power_num = '{:.1f}'.format(sum(int(x, 2) * pow(10, 3 - i) for i, x in enumerate([current[i: i + 4] for i in range(0, len(current), 4)
+                                        power_num = '{:.1f}'.format(sum(int(x, 2) * pow(10, 3 - i) for i, x in enumerate([current[i: i + 4] for i in range(0, len(current), 4])))
                                         
                                         await update_state(name, 'power', rid, id, onoff)
                                         await update_state(name, 'auto', rid, id, onoff)
