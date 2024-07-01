@@ -490,15 +490,34 @@ def ezville_loop(config):
                                     
                                         # BIT0: 대기전력 On/Off, BIT1: 자동모드 On/Off
                                         # 위와 같지만 일단 on-off 여부만 판단
-                                        onoff = 'ON' if int(packet[7 + 6 * id], 16) > 0 else 'OFF'
-                                        autoonoff = 'ON' if int(packet[6 + 6 * id], 16) > 0 else 'OFF'
+                                        DATA = "{0:024b}".format(int(packet[6 + 6 * id : 12 + 6 * id], 16))
+                                        onoff = "ON" if DATA[3] == "1" else "OFF"
+                                        autoonoff = "ON" if DATA[0] == "1" else "OFF"
                                         current = DATA[4:]
-                                        power_num = '{:.1f}'.format(sum(int(x, 2) * pow(10, 3 - i) for i, x in enumerate([current[i: i + 4] for i in range(0, len(current), 4])))
-                                        
-                                        await update_state(name, 'power', rid, id, onoff)
-                                        await update_state(name, 'auto', rid, id, onoff)
-                                        await update_state(name, 'current', rid, id, power_num)
-                                    
+                                        power_num = "{:.1f}".format(
+                                            sum(
+                                                int(x, 2) * pow(10, 3 - i)
+                                                for i, x in enumerate(
+                                                    [
+                                                        current[i : i + 4]
+                                                        for i in range(
+                                                            0, len(current), 4
+                                                        )
+                                                    ]
+                                                )
+                                            )
+                                        )
+
+                                        await update_state(
+                                            name, "power", rid, id, onoff
+                                        )
+                                        await update_state(
+                                            name, "auto", rid, id, autoonoff
+                                        )
+                                        await update_state(
+                                            name, "current", rid, id, power_num
+                                        )
+
                                         # 직전 처리 State 패킷은 저장
                                         MSG_CACHE[packet[0:10]] = packet[10:]
                                 else:
