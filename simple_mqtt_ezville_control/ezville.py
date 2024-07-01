@@ -701,18 +701,39 @@ def ezville_loop(config):
 #                                if debug:
 #                                    log('[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}'.format(sendcmd, recvcmd))
 
-                elif device == 'light':                         
-                    pwr = '01' if value == 'ON' else '00'
-                        
-                    sendcmd = checksum('F7' + RS485_DEVICE[device]['power']['id'] + '1' + str(idx) + RS485_DEVICE[device]['power']['cmd'] + '030' + str(sid) + pwr + '000000')
-                    recvcmd = 'F7' + RS485_DEVICE[device]['power']['id'] + '1' + str(idx) + RS485_DEVICE[device]['power']['ack']
+                elif device == "light":
+                    pwr = "01" if value == "ON" else "00"
+                    if idx == 1 and sid in [1, 2] and pwr == "01":
+                        pwr = "41"
+                    sendcmd = checksum(
+                        "F7"
+                        + RS485_DEVICE[device]["power"]["id"]
+                        + f"1{idx}"
+                        + RS485_DEVICE[device]["power"]["cmd"]
+                        + "03"
+                        + f"0{sid}"
+                        + pwr
+                        + "000000"
+                    )
+                    recvcmd = (
+                        "F7"
+                        + RS485_DEVICE[device]["power"]["id"]
+                        + f"1{idx}"
+                        + RS485_DEVICE[device]["power"]["ack"]
+                    )
                     statcmd = [key, value]
-                    
-                    await CMD_QUEUE.put({'sendcmd': sendcmd, 'recvcmd': recvcmd, 'statcmd': statcmd})
-                               
+
+                    await CMD_QUEUE.put(
+                        {"sendcmd": sendcmd, "recvcmd": recvcmd, "statcmd": statcmd}
+                    )
+
                     if debug:
-                        log('[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}, statcmd: {}'.format(sendcmd, recvcmd, statcmd))
-                                
+                        log(
+                            "[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}, statcmd: {}".format(
+                                sendcmd, recvcmd, statcmd
+                            )
+                        )
+        
                 elif device == 'plug':                         
                     pwr = '01' if value == 'ON' else '00'
 
