@@ -410,7 +410,7 @@ def ezville_loop(config):
                                         await asyncio.sleep(DISCOVERY_DELAY)
                                     
                                     # State 업데이트까지 진행
-                                    onoff = 'ON' if int(packet[10 + 2 * id: 12 + 2 * id], 16) > 0 else 'OFF'
+                                    onoff = 'ON' if int(packet[10 + 2 * id: 12 + 2 * id], 16) & 1 else 'OFF'
                                         
                                     await update_state(name, 'power', rid, id, onoff)
                                     
