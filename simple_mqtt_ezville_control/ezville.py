@@ -27,7 +27,7 @@ RS485_DEVICE = {
     'plug': {
         'state':    { 'id': '30', 'cmd': '81' },
 
-        'power':    { 'id': '30', 'cmd': '43', 'ack': 'C3' }
+        'power':    { 'id': '30', 'cmd': '41', 'ack': 'C1' }
     },
     'gasvalve': {
         'state':    { 'id': '12', 'cmd': '81' },
@@ -95,6 +95,7 @@ DISCOVERY_PAYLOAD = {
         'name': 'ezville_plug_{:0>2d}_{:0>2d}_powermeter',
         'stat_t': '~/current/state',
         'unit_of_meas': 'W'
+        'device_class': 'energy'
     } ],
     'gasvalve': [ {
         '_intg': 'switch',
